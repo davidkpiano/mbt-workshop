@@ -155,60 +155,30 @@ function ThanksScreen({ onClose }) {
 }
 
 function feedbackReducer(state, event) {
-  switch (state) {
-    case 'question':
-      switch (event.type) {
-        case 'GOOD':
-          return 'thanks';
-        case 'BAD':
-          return 'form';
-        case 'CLOSE':
-          return 'closed';
-        default:
-          return state;
-      }
-    case 'form':
-      switch (event.type) {
-        case 'SUBMIT':
-          return 'thanks';
-        case 'CLOSE':
-          return 'closed';
-        default:
-          return state;
-      }
-    case 'thanks':
-      switch (event.type) {
-        case 'CLOSE':
-          return 'closed';
-        default:
-          return state;
-      }
-    default:
-      return state;
-  }
+  // Write your reducer here
 }
 
 function Feedback() {
-  const [state, send] = useReducer(feedbackReducer, 'question');
+  const [state, dispatch] = useReducer(feedbackReducer, 'question');
 
   switch (state) {
     case 'question':
       return (
         <QuestionScreen
-          onClickGood={() => send({ type: 'GOOD' })}
-          onClickBad={() => send({ type: 'BAD' })}
-          onClose={() => send({ type: 'CLOSE' })}
+          onClickGood={() => dispatch({ type: 'GOOD' })}
+          onClickBad={() => dispatch({ type: 'BAD' })}
+          onClose={() => dispatch({ type: 'CLOSE' })}
         />
       );
     case 'form':
       return (
         <FormScreen
-          onSubmit={value => send({ type: 'SUBMIT', value })}
-          onClose={() => send({ type: 'CLOSE' })}
+          onSubmit={value => dispatch({ type: 'SUBMIT', value })}
+          onClose={() => dispatch({ type: 'CLOSE' })}
         />
       );
     case 'thanks':
-      return <ThanksScreen onClose={() => send({ type: 'CLOSE' })} />;
+      return <ThanksScreen onClose={() => dispatch({ type: 'CLOSE' })} />;
     case 'closed':
       return null;
   }
